@@ -16,6 +16,7 @@ import { formrs } from "@material-ui/system";
 import InputBase from "@material-ui/core/InputBase";
 import { ThemeProvider } from "@material-ui/styles";
 import { green } from "@material-ui/core/colors";
+import Bernie from "../logo.png";
 
 function Copyright() {
   return (
@@ -56,14 +57,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundImage: `url(${process.env.PUBLIC_URL + "../Images/logo.png"})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    height: "80px",
-    width: "80px",
-  },
+  // avatar: {
+  //   margin: theme.spacing(1),
+  //   backgroundImage: `url(${process.env.PUBLIC_URL + "../Images/logo.png"})`,
+  //   backgroundSize: "cover",
+  //   backgroundPosition: "center",
+  //   height: "80px",
+  //   width: "80px",
+  // },
   submit: {
     margin: theme.spacing(3, 0, 2),
     background: "linear-gradient(45deg, #00867E 30%, #019966  90%)",
@@ -75,6 +76,11 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: "gray",
   },
+  large: {
+    height: theme.spacing(13),
+    width: theme.spacing(13),
+    // height: "180px",
+  },
 }));
 
 export default function SignInSide() {
@@ -83,7 +89,7 @@ export default function SignInSide() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={8} className={classes.image} />
+      <Grid item xs={false} sm={4} md={8} />
       <Grid
         item
         xs={12}
@@ -95,10 +101,12 @@ export default function SignInSide() {
         className={classes.form}
       >
         <div className={classes.paper}>
-          <Avatar className={classes.avatar} />
+          <Avatar src={Bernie} className={classes.large} />
+
           <Typography component="h1" variant="h5">
             ECO AUTOPARTS
           </Typography>
+
           <form className={classes.form} noValidate>
             <ThemeProvider theme={theme}>
               <TextField
@@ -125,6 +133,7 @@ export default function SignInSide() {
                 autoComplete="current-password"
               />
             </ThemeProvider>
+
             <Button
               type="submit"
               fullWidth
@@ -134,6 +143,7 @@ export default function SignInSide() {
             >
               Iniciar Sesion
             </Button>
+
             <Grid container>
               <Grid item xs align="center">
                 <Link href="#" variant="body2" className={classes.link}>
@@ -141,11 +151,11 @@ export default function SignInSide() {
                 </Link>
               </Grid>
             </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
           </form>
         </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
       </Grid>
     </Grid>
   );
