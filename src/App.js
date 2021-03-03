@@ -8,7 +8,7 @@ import MyForm from './Componentes/Formik.js'
 
 function App() {
   return (
-      <MyForm/>
+      <SignInSide/>
       // <SignInSide/>
   );
 }
