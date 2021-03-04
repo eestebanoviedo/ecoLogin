@@ -1,28 +1,33 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
+import ReactDOM from "react-dom";
+import * as yup from "yup";
+import { useFormik } from "formik";
 
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import Bernie from "../logo.png";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"ECO Autoparts SA © "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .min(5, "Nombre Corto!")
+    .max(20, "Nombre Largo!")
+    .required("Required"),
+  password: yup
+    .string("Enter your password")
+    .min(8, "La contraseña debe tener un minimo de 8 caracteres")
+    .required("Password is required"),
+});
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -75,12 +80,32 @@ const useStyles = makeStyles((theme) => ({
   large: {
     height: theme.spacing(13),
     width: theme.spacing(13),
-    height: "180px",
+    // height: "180px",
   },
 }));
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"ECO Autoparts SA © "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
 export default function SignInSide() {
   const classes = useStyles();
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -103,18 +128,23 @@ export default function SignInSide() {
             ECO AUTOPARTS
           </Typography>
 
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            onSubmit={formik.handleSubmit}
+            noValidate
+          >
             <ThemeProvider theme={theme}>
               <TextField
                 variant="outlined"
-                id="custom-css-outlined-input"
                 margin="normal"
-                required
                 fullWidth
                 id="name"
-                label="Usuario"
                 name="name"
-                autoComplete="name"
+                label="Nombre"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
                 autoFocus
               />
               <TextField
@@ -122,10 +152,16 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
+                id="password"
                 name="password"
                 label="Contraseña"
                 type="password"
-                id="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
                 autoComplete="current-password"
               />
             </ThemeProvider>
@@ -156,3 +192,5 @@ export default function SignInSide() {
     </Grid>
   );
 }
+
+ReactDOM.render(<SignInSide />, document.getElementById("root"));
