@@ -1,12 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {} from "@fortawesome/free-solid-svg-icons";
-
 import * as yup from "yup";
 import { useFormik } from "formik";
-
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
@@ -20,26 +15,9 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import Bernie from "../personal.png";
 
-import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { useHistory } from "react-router-dom";
 
-const validationSchema = yup.object({
-  name: yup
-    .string()
-    .min(5, "Nombre demasiado corto")
-    .max(20, "Nombre demasiado largo")
-    .required("Usuario requerido"),
-  password: yup
-    .string("Enter your password")
-    .min(8, "La contraseña debe tener un minimo de 8 caracteres")
-    .required("Contraseña requerida"),
-});
+import UsuarioCambiado from "./usuarioCambiado.js";
 
 const theme = createMuiTheme({
   palette: {
@@ -70,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: "200px",
+    marginTop: "72px",
   },
   // avatar: {
   //   margin: theme.spacing(1),
-  //   backgroundImage: `url(${process.env.PUBLIC_URL + "../Images/logo.png"})`,
+  //   backgroundImage: url(${process.env.PUBLIC_URL + "../Images/logo.png"}),
   //   backgroundSize: "cover",
   //   backgroundPosition: "center",
   //   height: "80px",
@@ -95,10 +73,16 @@ const useStyles = makeStyles((theme) => ({
   large: {
     height: "239px",
     width: "239px",
-    marginBottom: "45px",
+    bottom: "45px",
   },
 }));
-
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .min(5, "Nombre demasiado corto")
+    .max(20, "Nombre demasiado largo")
+    .required("Usuario requerido"),
+});
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -109,39 +93,20 @@ function Copyright() {
   );
 }
 
-export default function Inicio3() {
+export default function CambiarUsuario() {
+  let history = useHistory();
+
   const classes = useStyles();
   const formik = useFormik({
     initialValues: {
       name: "",
-      password: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      history.push("/usuarioCambiado");
     },
   });
-
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -167,6 +132,12 @@ export default function Inicio3() {
             noValidate
           >
             <ThemeProvider theme={theme}>
+              <Typography variant="body1" align="center">
+                {
+                  "Ingresa tu usuario y te reiniciaremos tu contraseña al valor por defecto"
+                }
+                {"."}
+              </Typography>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -180,57 +151,7 @@ export default function Inicio3() {
                 helperText={formik.touched.name && formik.errors.name}
                 autoFocus
               />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="password"
-                name="password"
-                label="Contraseña"
-                type="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                autoComplete="current-password"
-              />
-
-              <FormControl
-                className={clsx(classes.margin, classes.textField)}
-                variant="outlined"
-              >
-                <InputLabel htmlFor="outlined-adornment-password">
-                  asdadassd
-                </InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  type={values.showPassword ? "text" : "password"}
-                  value={values.password}
-                  onChange={handleChange("password")}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {values.showPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  labelWidth={70}
-                />
-              </FormControl>
             </ThemeProvider>
-
             <Button
               type="submit"
               fullWidth
@@ -238,17 +159,12 @@ export default function Inicio3() {
               color="primary"
               className={classes.submit}
             >
-              Iniciar Sesion
+              Reiniciar Contraseña
             </Button>
-
             <Grid container>
               <Grid item xs align="center">
-                <Link
-                  href="/formulario"
-                  variant="body2"
-                  className={classes.link}
-                >
-                  ¿Olvido su contraseña?
+                <Link href="/" variant="body2" className={classes.link}>
+                  Volver
                 </Link>
               </Grid>
             </Grid>
@@ -261,5 +177,4 @@ export default function Inicio3() {
     </Grid>
   );
 }
-
-ReactDOM.render(<Inicio3 />, document.getElementById("root"));
+ReactDOM.render(<CambiarUsuario />, document.getElementById("root"));

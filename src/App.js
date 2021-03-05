@@ -1,17 +1,47 @@
 import "./App.css";
-import React from "react";
+import React, { Fragment } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import Route from "react-router-dom/Route";
 
-import SignInSide from "./Componentes/Inicio.js";
-import SignInSide2 from "./Componentes/Inicio2.js";
-import SignInSide3 from "./Componentes/Inicio3.js";
-import WithMaterialUI from "./Componentes/Formik.js";
+import Inicio3 from "./Componentes/Inicio3.js";
+import CambiarUsuario from "./Componentes/CambiarUsuario.js";
+import UsuarioCambiado from "./Componentes/usuarioCambiado.js";
 
-import Login from "./Componentes/Login.js";
+export default function App() {
+  return (
+    <Router>
+      <Fragment>
+        {/* <HeaderImg /> */}
 
-function App() {
-  return <SignInSide3 />;
+        <Route
+          path="/"
+          exact
+          strict
+          render={() => {
+            return <Inicio3 />;
+          }}
+        />
+        <Route
+          path="/formulario"
+          exact
+          strict
+          render={() => {
+            return <CambiarUsuario />;
+          }}
+        />
+        <Route
+          path="/usuarioCambiado"
+          exact
+          strict
+          render={() => {
+            return <UsuarioCambiado />;
+          }}
+        />
+      </Fragment>
+    </Router>
+  );
 }
 
 // ReactDOM.render(<App />, document.querySelector('#app'));
 
-export default App;
+// export default App;
