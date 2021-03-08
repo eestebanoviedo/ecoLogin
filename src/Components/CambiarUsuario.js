@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
+
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,7 +14,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import Bernie from "../personal.png";
+
+import Bernie from "../Images/logo.png";
+
+import { useHistory } from "react-router-dom";
 
 const theme = createMuiTheme({
   palette: {
@@ -44,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginTop: "72px",
+    // marginTop: "72px",
   },
   // avatar: {
   //   margin: theme.spacing(1),
@@ -61,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   form: {
     borderRadius: "40px",
     margin: "30px",
-    marginTop: "-50px",
+    // marginTop: "-50px",
   },
   link: {
     color: "gray",
@@ -88,7 +92,10 @@ function Copyright() {
     </Typography>
   );
 }
-export default function UsuarioCambiado() {
+
+export default function CambiarUsuario() {
+  let history = useHistory();
+
   const classes = useStyles();
   const formik = useFormik({
     initialValues: {
@@ -97,6 +104,7 @@ export default function UsuarioCambiado() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      history.push("/usuarioCambiado");
     },
   });
   return (
@@ -126,10 +134,23 @@ export default function UsuarioCambiado() {
             <ThemeProvider theme={theme}>
               <Typography variant="body1" align="center">
                 {
-                  "Tu contraseña se ha reestablecido al valor por defecto. Vuela al menu anterior y ingrese con la contraseña por defecto"
+                  "Ingresa tu usuario y te reiniciaremos tu contraseña al valor por defecto"
                 }
                 {"."}
               </Typography>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="name"
+                name="name"
+                label="Nombre"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+                autoFocus
+              />
             </ThemeProvider>
             <Button
               type="submit"
@@ -137,10 +158,16 @@ export default function UsuarioCambiado() {
               variant="contained"
               color="primary"
               className={classes.submit}
-              href="/"
             >
-              Volver
+              Reiniciar Contraseña
             </Button>
+            <Grid container>
+              <Grid item xs align="center">
+                <Link href="/" variant="body2" className={classes.link}>
+                  Volver
+                </Link>
+              </Grid>
+            </Grid>
           </form>
         </div>
         <Box mt={5}>
@@ -150,4 +177,4 @@ export default function UsuarioCambiado() {
     </Grid>
   );
 }
-ReactDOM.render(<UsuarioCambiado />, document.getElementById("root"));
+ReactDOM.render(<CambiarUsuario />, document.getElementById("root"));

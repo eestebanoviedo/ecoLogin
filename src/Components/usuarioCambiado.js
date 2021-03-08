@@ -1,28 +1,19 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
+import ReactDOM from "react-dom";
+import * as yup from "yup";
+import { useFormik } from "formik";
 
-import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import Bernie from "../logo.png";
+import Bernie from "../Images/logo.png";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"ECO Autoparts SA © "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -52,10 +43,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginTop: "72px",
   },
   // avatar: {
   //   margin: theme.spacing(1),
-  //   backgroundImage: `url(${process.env.PUBLIC_URL + "../Images/logo.png"})`,
+  //   backgroundImage: url(${process.env.PUBLIC_URL + "../Images/logo.png"}),
   //   backgroundSize: "cover",
   //   backgroundPosition: "center",
   //   height: "80px",
@@ -68,24 +60,48 @@ const useStyles = makeStyles((theme) => ({
   form: {
     borderRadius: "40px",
     margin: "30px",
+    marginTop: "-50px",
   },
   link: {
     color: "gray",
   },
   large: {
-    height: theme.spacing(13),
-    width: theme.spacing(13),
-    height: "180px",
+    height: "239px",
+    width: "239px",
+    bottom: "45px",
   },
 }));
-
-export default function SignInSide() {
+const validationSchema = yup.object({
+  name: yup
+    .string()
+    .min(5, "Nombre demasiado corto")
+    .max(20, "Nombre demasiado largo")
+    .required("Usuario requerido"),
+});
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"ECO Autoparts SA © "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+export default function UsuarioCambiado() {
   const classes = useStyles();
-
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={8} />
+      <Grid item xs={false} sm={4} md={9} />
       <Grid
         item
         xs={12}
@@ -94,59 +110,36 @@ export default function SignInSide() {
         component={Paper}
         elevation={6}
         square
-        className={classes.form}
+        // className={classes.form}
       >
         <div className={classes.paper}>
-          <Avatar src={Bernie} className={classes.large} />
-
-          <Typography component="h1" variant="h5">
+          {/* <Typography component="h1" variant="h5">
             ECO AUTOPARTS
-          </Typography>
-
-          <form className={classes.form} noValidate>
+          </Typography> */}
+          <Avatar src={Bernie} className={classes.large} />
+          <form
+            className={classes.form}
+            onSubmit={formik.handleSubmit}
+            noValidate
+          >
             <ThemeProvider theme={theme}>
-              <TextField
-                variant="outlined"
-                id="custom-css-outlined-input"
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="Usuario"
-                name="name"
-                autoComplete="name"
-                autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Contraseña"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
+              <Typography variant="body1" align="center">
+                {
+                  "Tu contraseña se ha reestablecido al valor por defecto. Vuela al menu anterior y ingrese con la contraseña por defecto"
+                }
+                {"."}
+              </Typography>
             </ThemeProvider>
-
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              href="/"
             >
-              Iniciar Sesion
+              Volver
             </Button>
-
-            <Grid container>
-              <Grid item xs align="center">
-                <Link href="#" variant="body2" className={classes.link}>
-                  ¿Olvido su contraseña?
-                </Link>
-              </Grid>
-            </Grid>
           </form>
         </div>
         <Box mt={5}>
@@ -156,3 +149,4 @@ export default function SignInSide() {
     </Grid>
   );
 }
+ReactDOM.render(<UsuarioCambiado />, document.getElementById("root"));

@@ -1,11 +1,10 @@
-import "./App.css";
 import React, { Fragment } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Route from "react-router-dom/Route";
 
-import Inicio3 from "./Componentes/Inicio3.js";
-import CambiarUsuario from "./Componentes/CambiarUsuario.js";
-import UsuarioCambiado from "./Componentes/usuarioCambiado.js";
+import Inicio3 from "./Components/Inicio3.js";
+import CambiarUsuario from "./Components/CambiarUsuario.js";
+import UsuarioCambiado from "./Components/usuarioCambiado.js";
 
 export default function App() {
   return (
